@@ -409,20 +409,57 @@ document.addEventListener('DOMContentLoaded', () => {
     applyTheme(currentTheme);
 
     // ==========================================
-    // 4. SPA MULTI-PAGE VIEW SWITCHER
+    // 4. SPA MULTI-PAGE VIEW SWITCHER & HASH ROUTING ENGINE
     // ==========================================
-    const navTriggers = document.querySelectorAll('.nav-trigger, .menu-link, .mobile-menu-link');
     const viewPanes = document.querySelectorAll('.view-pane');
+    const validTabs = ['accueil', 'apropos', 'services', 'portfolio', 'booking', 'medias', 'contact'];
 
-    function switchTab(tabId) {
+    // Drawer Backdrop Setup
+    let backdrop = document.querySelector('.drawer-backdrop');
+    if (!backdrop) {
+        backdrop = document.createElement('div');
+        backdrop.className = 'drawer-backdrop';
+        document.body.appendChild(backdrop);
+    }
+
+    function closeMobileDrawer() {
+        const mobileDrawer = document.getElementById('mobileDrawer');
+        if (mobileDrawer) {
+            mobileDrawer.classList.remove('open', 'active');
+        }
+        if (backdrop) {
+            backdrop.classList.remove('open', 'active');
+        }
+    }
+
+    function openMobileDrawer() {
+        const mobileDrawer = document.getElementById('mobileDrawer');
+        if (mobileDrawer) {
+            mobileDrawer.classList.add('open', 'active');
+        }
+        if (backdrop) {
+            backdrop.classList.add('open', 'active');
+        }
+    }
+
+    function switchTab(targetTabId, updateHash = true) {
+        let tabId = targetTabId;
+        if (!validTabs.includes(tabId)) {
+            tabId = 'accueil';
+        }
+
+        // Active section visibility
         viewPanes.forEach(pane => {
             if (pane.id === tabId) {
                 pane.classList.add('active');
+                pane.style.display = 'block';
             } else {
                 pane.classList.remove('active');
+                pane.style.display = 'none';
             }
         });
 
+        // Active nav state
         const allMenuLinks = document.querySelectorAll('.menu-link, .mobile-menu-link');
         allMenuLinks.forEach(link => {
             if (link.getAttribute('data-tab') === tabId) {
@@ -432,41 +469,71 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // Synchronize Hash URL without double jump
+        if (updateHash) {
+            if (window.location.hash !== '#' + tabId) {
+                history.pushState(null, null, '#' + tabId);
+            }
+        }
+
+        closeMobileDrawer();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    navTriggers.forEach(trigger => {
-        trigger.addEventListener('click', (e) => {
-            const tabId = trigger.getAttribute('data-tab');
-            if (tabId) {
-                e.preventDefault();
-                switchTab(tabId);
+    // Hash Handler for direct URLs, bookmarks & browser Back/Forward navigation
+    function handleLocationHash() {
+        const rawHash = window.location.hash.replace('#', '').trim();
+        if (rawHash && validTabs.includes(rawHash)) {
+            switchTab(rawHash, false);
+        } else {
+            switchTab('accueil', false);
+        }
+    }
 
-                const mobileDrawer = document.getElementById('mobileDrawer');
-                if (mobileDrawer && mobileDrawer.classList.contains('active')) {
-                    mobileDrawer.classList.remove('active');
+    window.addEventListener('hashchange', handleLocationHash);
+    handleLocationHash(); // Execute on initial DOM load
+
+    // Global Event Delegation for all navigation triggers, buttons, and links
+    document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('[data-tab], .nav-trigger, .menu-link, .mobile-menu-link, a[href^="#"]');
+        if (trigger) {
+            let tabId = trigger.getAttribute('data-tab');
+            if (!tabId && trigger.getAttribute('href')) {
+                const href = trigger.getAttribute('href');
+                if (href.startsWith('#') && href.length > 1) {
+                    tabId = href.replace('#', '').trim();
                 }
             }
-        });
+
+            if (tabId && validTabs.includes(tabId)) {
+                e.preventDefault();
+                switchTab(tabId, true);
+            }
+        }
     });
 
     // ==========================================
-    // 5. MOBILE DRAWER MENU
+    // 5. MOBILE DRAWER MENU & BACKDROP LISTENERS
     // ==========================================
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mobileDrawer = document.getElementById('mobileDrawer');
     const drawerClose = document.getElementById('drawerClose');
 
-    if (mobileMenuBtn && mobileDrawer) {
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileDrawer.classList.add('active');
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openMobileDrawer();
         });
     }
 
-    if (drawerClose && mobileDrawer) {
-        drawerClose.addEventListener('click', () => {
-            mobileDrawer.classList.remove('active');
+    if (drawerClose) {
+        drawerClose.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeMobileDrawer();
         });
+    }
+
+    if (backdrop) {
+        backdrop.addEventListener('click', closeMobileDrawer);
     }
 
     // ==========================================
