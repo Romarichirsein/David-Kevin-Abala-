@@ -477,6 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         closeMobileDrawer();
+        revealAllSections();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -529,6 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
         drawerClose.addEventListener('click', (e) => {
             e.stopPropagation();
             closeMobileDrawer();
+        revealAllSections();
         });
     }
 
@@ -690,5 +692,17 @@ document.addEventListener('DOMContentLoaded', () => {
             follower.style.transform = `translate3d(${e.clientX - 15}px, ${e.clientY - 15}px, 0)`;
         });
     }
+
+
+    // Scroll Reveal Auto-Initializer
+    function revealAllSections() {
+        const items = document.querySelectorAll('.scroll-reveal');
+        items.forEach(el => {
+            el.classList.add('revealed');
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+        });
+    }
+    revealAllSections();
 
 });
