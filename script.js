@@ -7,7 +7,7 @@
  * - 3D Mouse Physics Tilt Interactivity (.card-tilt-3d)
  * - Editorial Bio Tabs Switcher on Home page (.ed-tab-btn)
  * - Portfolio Category Filter Engine (all, htv, corporate, weddings, russia, mc, press, tv)
- * - Direct WhatsApp Booking Form Engine (+237 696088243 / +237 689238678)
+ * - Direct WhatsApp Booking Form Engine (+237 696088243)
  * - Poppins Font & Bi-Theme Light / Dark Mode Switcher (localStorage)
  * - 100% Comprehensive FR / EN Bilingual Translation System (localStorage)
  * - FAQ Accordion (1 item active at a time)
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "cta.desc": "Conduite d'interviews, production éditoriale, maîtrise de cérémonie et voix-off institutionnelle.",
             "booking.tag": "Réservation Officielle",
             "booking.title": "Prise de Contact & Réservation",
-            "booking.desc": "Transmettez vos besoins en animation, présentation TV ou voix-off. Confirmation immédiate sur WhatsApp (+237 696 088 243 / +237 689 23 86 78).",
+            "booking.desc": "Transmettez vos besoins en animation, présentation TV ou voix-off. Confirmation immédiate sur WhatsApp (+237 696 088 243).",
             "booking.formTitle": "Demande de Collaboration & Disponibilités",
             "b.notice": "Toutes les informations transmises génèrent un message WhatsApp officiel pré-formaté.",
             "b.dateLabel": "Date souhaitée de l'Événement / Mission *",
@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "cta.desc": "Interview conducting, editorial production, event hosting, and institutional voice-overs.",
             "booking.tag": "Official Booking",
             "booking.title": "Get in Touch & Booking",
-            "booking.desc": "Submit your requirements for broadcasting, TV anchoring, or voice-overs. Immediate WhatsApp confirmation (+237 696 088 243 / +237 689 23 86 78).",
+            "booking.desc": "Submit your requirements for broadcasting, TV anchoring, or voice-overs. Immediate WhatsApp confirmation (+237 696 088 243).",
             "booking.formTitle": "Collaboration & Availability Request",
             "b.notice": "All submitted information generates a pre-formatted official WhatsApp message.",
             "b.dateLabel": "Requested Date for Event / Project *",
